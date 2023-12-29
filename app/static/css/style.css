@@ -1,0 +1,16 @@
+h1 {
+    font-size: 60px;
+}
+
+body {
+    background: lightgray;
+}
+
+#demo{
+    color: darkblue;
+    font-size: 12px;
+}
+
+.row{
+    --bs-gutter-x: 0.0rem !important;
+}

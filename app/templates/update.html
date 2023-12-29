@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+{% if session["id"] == id or session["id"] == admin_id or session["is_admin"]%}
+
+<h1>Update User:</h1>
+<br/>
+<div class="shadow p-3 mb-5 bg-body-tertiary rounded">
+    <form action="/update/{{ name_to_update.id }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label(class="form-label") }}
+        {{ form.name(class="form-control", value=name_to_update.name) }}
+        <br/>
+        {{ form.username.label(class="form-label") }}
+        {{ form.username(class="form-control", value=name_to_update.username) }}
+        <br/>
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control", value=name_to_update.email) }}
+        <br/>
+        {{ form.fav_color.label(class="form-label") }}
+        {{ form.fav_color(class="form-control", value=name_to_update.fav_color) }}
+        <br/>
+        {{ form.is_admin.label(class="form-label") }}
+        {{ form.is_admin(class="form-control", value=name_to_update.is_admin) }}
+        <br/>
+        {{ form.submit(class="btn btn-secondary") }}
+
+        <a href="{{ url_for('delete', id=name_to_update.id) }}" class="btn btn-danger">Delete</a>
+    </form>
+</div>
+
+<br/><br/><br/>
+
+{% else %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>You cannot edit this user</strong> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <h2>Access Denied!</h2>
+    <p>You do not have the right permissions to modify this user's profile</p>
+{% endif %}
+
+{% endblock %}

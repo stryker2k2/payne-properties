@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
+
+<h2>Dashboard</h2>
+
+<div class="card">
+    <div class="card-header">
+        <strong>{{ name_to_update.name }}</strong><br/>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-8">
+                        <strong>Name</strong> {{ name_to_update.name }}<br/>
+                        <strong>Username: </strong> {{ name_to_update.username }}<br/>
+                        <strong>User Id:</strong> {{ name_to_update.id }}<br/>
+                        <strong>Email: </strong> {{ name_to_update.email }}<br/>
+                        <strong>Favorite Color: </strong> {{ name_to_update.fav_color }}<br/>
+                        <strong>About Author: </strong> {{ name_to_update.about_author }}<br/>
+                        <strong>Profile Pic: </strong> {{ name_to_update.profile_pic }}<br/>
+                        <strong>Date Joined: </strong> {{ name_to_update.date_added }}<br/></p>
+                        <a href="{{ url_for('logout') }}" class="btn btn-secondary btn-sm">Logout</a>
+                        <a href="{{ url_for('update', id=session['id']) }}" class="btn btn-secondary btn-sm">Update</a>
+                        <a href="{{ url_for('delete', id=session['id']) }}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                    <div class="col-4">
+                        {% if name_to_update.profile_pic %}
+                            <img src="{{ url_for('static', filename='images/profile_pics/' + name_to_update.profile_pic )}}" width="200" align="right"/>
+                        {% else %}
+                            <img src="{{ url_for('static', filename='images/profile_pics/default-user-profile-pic.png')}}" width="200" align="right"/>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<br/><br/>
+
+<div class="card">
+    <div class="card-header">
+        <strong>Update Profile</strong><br/>
+    </div>
+    <div class="card-body">
+        <form action="/dashboard" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{ form.name.label(class="form-label") }}
+            {{ form.name(class="form-control", value=name_to_update.name) }}
+            <br/>
+            {{ form.username.label(class="form-label") }}
+            {{ form.username(class="form-control", value=name_to_update.username) }}
+            <br/>
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control", value=name_to_update.email) }}
+            <br/>
+            {{ form.fav_color.label(class="form-label") }}
+            {{ form.fav_color(class="form-control", value=name_to_update.fav_color) }}
+            <br/>
+            {{ form.about_author.label(class="form-label") }}
+            <textarea name="about_author" class="form-control">{{ name_to_update.about_author }}</textarea>
+            <br/>
+            {{ form.profile_pic.label(class="form-label") }}
+            {{ form.profile_pic(class="form-control", value=name_to_update.profile_pic) }}
+            <br/>
+            {{ form.submit(class="btn btn-secondary btn-sm") }}
+        </form>
+    </div>
+</div>
+
+<br/><br/>
+
+{% endblock %}
