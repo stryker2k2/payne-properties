@@ -23,7 +23,6 @@
                         <strong>Username: </strong> {{ name_to_update.username }}<br/>
                         <strong>User Id:</strong> {{ name_to_update.id }}<br/>
                         <strong>Email: </strong> {{ name_to_update.email }}<br/>
-                        <strong>Favorite Color: </strong> {{ name_to_update.fav_color }}<br/>
                         <strong>About Author: </strong> {{ name_to_update.about_author }}<br/>
                         <strong>Profile Pic: </strong> {{ name_to_update.profile_pic }}<br/>
                         <strong>Date Joined: </strong> {{ name_to_update.date_added }}<br/></p>
@@ -59,9 +58,6 @@
             <br/>
             {{ form.email.label(class="form-label") }}
             {{ form.email(class="form-control", value=name_to_update.email) }}
-            <br/>
-            {{ form.fav_color.label(class="form-label") }}
-            {{ form.fav_color(class="form-control", value=name_to_update.fav_color) }}
             <br/>
             {{ form.about_author.label(class="form-label") }}
             <textarea name="about_author" class="form-control">{{ name_to_update.about_author }}</textarea>

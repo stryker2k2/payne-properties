@@ -1,10 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endfor %}
 
     </br>
     <h2>Admin Dashboard</h2>
-    <p>Perform administration actions here</p>
+    <p>User Management
+        <button type="button" class="btn btn-success btn-sm" aria-label="Close">
+            +
+        </button>
+    </p>
 
     <table class="table table-hover table-bordered table-striped">
         <tr>
@@ -14,7 +24,7 @@
             <td>Email</td>
             <td>Admin</td>
         </tr>
-        {% for our_user in tenants %}        
+        {% for our_user in tenants %}
         <tr>
             <td>
                 {{ our_user.id }}
@@ -34,5 +44,75 @@
         </tr>
         {% endfor %}
     </table>
+
+</br>
+
+<p>Properties Management    
+    <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#propertyModal" aria-label="Add Entry">
+        +
+    </button>
+</p>
+
+
+<table class="table table-hover table-bordered table-striped">
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Address</td>
+        <td>Rent</td>
+    </tr>
+    {% for property in properties %}        
+    <tr>
+        <td>
+            {{ property.id }}
+        </td>
+        <td>
+            {{ property.name }}
+        </td>
+        <td>
+            {{ property.address }}
+        </td>
+        <td>
+            {{ property.rent }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="propertyModalLabel">Add Property</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">            
+            <h1>User List:</h1>
+            <br/>
+            <!-- <div class="shadow p-3 mb-5 bg-body-tertiary rounded"> -->
+            <div>
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control") }}
+                    <br/>
+                    {{ form.address.label(class="form-label") }}
+                    {{ form.address(class="form-control") }}
+                    <br/>
+                    {{ form.hidden_tag() }}
+                    {{ form.rent.label(class="form-label") }}
+                    {{ form.rent(class="form-control") }}
+                    <br /> 
+                    <div class="modal-footer">              
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div> 
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

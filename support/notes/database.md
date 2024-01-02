@@ -61,6 +61,8 @@ mysql> DELETE FROM users;
 
 # Other Flask Migration Commands
 (virt)$ flask db help
-(virt)$ flask db stamp head          // Fix for 'Target database is not up to date'
+(virt)$ flask db stamp head          # Fix for 'Target database is not up to date'
+(virt)$ flask db history
+(virt)$ flask db check               # Check if there are any new operations to migrate
 
 ```

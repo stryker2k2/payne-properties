@@ -14,6 +14,13 @@ def set_global_html_variable_values():
     return template_config
 
 ## Database Models ##
+# Rental Property Post Model
+class Properties(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    address = db.Column(db.String(255), nullable=False)
+    rent = db.Column(db.Integer, default=0, nullable=True)
+
 # Blog Post Model
 class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -33,7 +40,6 @@ class Users(db.Model):
     username = db.Column(db.String(20), nullable=False, unique=True)
     name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(120), nullable=False, unique=True)
-    fav_color = db.Column(db.String(120))
     about_author = db.Column(db.Text(500), nullable=True)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     password_hash = db.Column(db.String(128))

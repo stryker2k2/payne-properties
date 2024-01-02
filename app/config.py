@@ -23,7 +23,7 @@ class Config:
     ADMIN_ID = config.get('ADMIN_ID')
     # SESSION_TYPE = config.get('SESSION_TYPE')
 
-    print("\n[+] UPLOAD_FOLDER: " + str(UPLOAD_FOLDER))
+    # print("\n[+] UPLOAD_FOLDER: " + str(UPLOAD_FOLDER))
 
 ###
 # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://db-admin:password@localhost/tenants'

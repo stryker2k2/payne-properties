@@ -3,8 +3,8 @@ from flask import render_template, flash, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from app import app, db
-from app.models import Users, Posts
-from app.webforms import LoginForm, PostForm, UserForm, PasswordForm, NamerForm, SearchForm
+from app.models import Users, Posts, Properties
+from app.webforms import LoginForm, PostForm, UserForm, PasswordForm, NamerForm, SearchForm, PropertyForm
 from functools import wraps
 import uuid as uuid
 import os
@@ -59,7 +59,6 @@ def dashboard():
     if request.method == 'POST':
         name_to_update.name = request.form['name']
         name_to_update.email = request.form['email']
-        name_to_update.fav_color = request.form['fav_color']
         name_to_update.username = request.form['username']
         name_to_update.about_author = request.form['about_author']
 
@@ -110,17 +109,61 @@ def dashboard():
 
 # Admin Route
 @app.route('/admin')
+# @app.route('/admin')
 # @login_required
 @session_required
 def admin():
+    form = PropertyForm()  
     id = session["id"]
+    form = PropertyForm()    
     if id == app.config['ADMIN_ID'] or session["is_admin"]:
         tenants = Users.query.order_by(Users.date_added)
-        return render_template('admin.html', 
-                               tenants = tenants)
+        properties = Properties.query.order_by(Properties.id)
+        return render_template('admin.html',
+                               properties = properties,
+                               tenants = tenants,
+                               form = form)
     else:
         flash('You must be an administrator to access this page')
         return redirect(url_for('dashboard'))
+    
+# Admin Route
+@app.route('/admin', methods=['POST'])
+# @app.route('/admin')
+# @login_required
+@session_required
+def admin_post():
+    form = PropertyForm()  
+    id = session["id"]
+    form = PropertyForm()    
+    if id == app.config['ADMIN_ID'] or session["is_admin"]:
+        tenants = Users.query.order_by(Users.date_added)
+        properties = Properties.query.order_by(Properties.id)
+        if form.validate_on_submit():
+            print('[+] Adding Property to Database')
+            property = Properties(name = form.name.data,
+                                  address = form.address.data,
+                                  rent = form.rent.data)
+            db.session.add(property)
+            db.session.commit()
+            flash('Property Added Successfully!')            
+        else:
+            flash('Error validating form!')
+        return redirect(url_for('admin')) 
+    else:
+        flash('You must be an administrator to access this page')
+        return redirect(url_for('dashboard'))
+
+
+
+
+
+
+
+
+
+
+
 
 # Logout Page Route
 @app.route('/logout', methods=['GET', 'POST'])
@@ -161,8 +204,7 @@ def add_user():
             hashed_pw = generate_password_hash(form.password_hash.data, "sha256")
             user = Users(name = form.name.data,
                 username = form.username.data,
-                email = form.email.data, 
-                fav_color = form.fav_color.data,
+                email = form.email.data,
                 password_hash = hashed_pw)
             print('\n[+] Adding User to Database')
             db.session.add(user)
@@ -170,13 +212,13 @@ def add_user():
             flash('User Added Successfully!')
         else:
             print('[!] Error adding User to Database')
+            print(form.name.errors)
             flash('Failed to Add User!')
         name = form.name.data
         email = form.email.data
         form.name.data = ''
         form.username.data = ''
         form.email.data = ''
-        form.fav_color.data = ''
         form.password_hash.data = ''
     this_user = Users.query.filter_by(email=email).first()
     return render_template('add_user.html',
@@ -223,7 +265,6 @@ def update(id):
         if request.method == 'POST':
             name_to_update.name = request.form['name']
             name_to_update.email = request.form['email']
-            name_to_update.fav_color = request.form['fav_color']
             name_to_update.username = request.form['username']
             name_to_update.is_admin = request.form['is_admin']
             try:
