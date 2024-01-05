@@ -113,16 +113,17 @@ def dashboard():
 # @login_required
 @session_required
 def admin():
-    form = PropertyForm()  
-    id = session["id"]
-    form = PropertyForm()    
+    propertyForm = PropertyForm()
+    userForm = UserForm()
+    id = session["id"]  
     if id == app.config['ADMIN_ID'] or session["is_admin"]:
         tenants = Users.query.order_by(Users.date_added)
         properties = Properties.query.order_by(Properties.id)
         return render_template('admin.html',
                                properties = properties,
                                tenants = tenants,
-                               form = form)
+                               propertyForm = propertyForm,
+                               userForm = userForm)
     else:
         flash('You must be an administrator to access this page')
         return redirect(url_for('dashboard'))
@@ -133,22 +134,32 @@ def admin():
 # @login_required
 @session_required
 def admin_post():
-    form = PropertyForm()  
-    id = session["id"]
-    form = PropertyForm()    
+    propertyForm = PropertyForm()  
+    userForm = UserForm()
+    id = session["id"] 
     if id == app.config['ADMIN_ID'] or session["is_admin"]:
-        tenants = Users.query.order_by(Users.date_added)
-        properties = Properties.query.order_by(Properties.id)
-        if form.validate_on_submit():
+        print(userForm.name.data, userForm.username.data, userForm.email.data, userForm.is_admin.data)
+        if propertyForm.validate_on_submit():
             print('[+] Adding Property to Database')
-            property = Properties(name = form.name.data,
-                                  address = form.address.data,
-                                  rent = form.rent.data)
+            property = Properties(name = propertyForm.name.data,
+                                  address = propertyForm.address.data,
+                                  rent = propertyForm.rent.data)
             db.session.add(property)
             db.session.commit()
-            flash('Property Added Successfully!')            
+            flash('Property Added Successfully!')        
+        elif userForm.validate_on_submit():
+            # Hash the Password
+            hashed_pw = generate_password_hash(userForm.password_hash.data, "sha256")
+            user = Users(name = userForm.name.data,
+                username = userForm.username.data,
+                email = userForm.email.data,
+                password_hash = hashed_pw)
+            print('\n[+] Adding User to Database')
+            db.session.add(user)
+            db.session.commit()
+            flash('User Added Successfully!')
         else:
-            flash('Error validating form!')
+            flash('Error Validating Form!')
         return redirect(url_for('admin')) 
     else:
         flash('You must be an administrator to access this page')

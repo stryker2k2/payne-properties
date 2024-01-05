@@ -10,8 +10,8 @@
 
     </br>
     <h2>Admin Dashboard</h2>
-    <p>User Management
-        <button type="button" class="btn btn-success btn-sm" aria-label="Close">
+    <p>Tenant Management
+        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#tenantModal" aria-label="Add Entry">
             +
         </button>
     </p>
@@ -79,40 +79,89 @@
     {% endfor %}
 </table>
 
-<!-- Modal -->
+<!-- Property Modal -->
 <div class="modal fade" id="propertyModal" tabindex="-1" aria-labelledby="propertyModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="propertyModalLabel">Add Property</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">            
-            <h1>User List:</h1>
-            <br/>
-            <!-- <div class="shadow p-3 mb-5 bg-body-tertiary rounded"> -->
-            <div>
-                <form method="POST">
-                    {{ form.hidden_tag() }}
-                    {{ form.name.label(class="form-label") }}
-                    {{ form.name(class="form-control") }}
-                    <br/>
-                    {{ form.address.label(class="form-label") }}
-                    {{ form.address(class="form-control") }}
-                    <br/>
-                    {{ form.hidden_tag() }}
-                    {{ form.rent.label(class="form-label") }}
-                    {{ form.rent(class="form-control") }}
-                    <br /> 
-                    <div class="modal-footer">              
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        {{ form.submit(class="btn btn-primary") }}
-                    </div> 
-                </form>
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="propertyModalLabel">Add Property</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">            
+                <h1>Property List:</h1>
+                <br/>
+                <!-- <div class="shadow p-3 mb-5 bg-body-tertiary rounded"> -->
+                <div>
+                    <form method="POST">
+                        {{ propertyForm.hidden_tag() }}
+                        {{ propertyForm.name.label(class="form-label") }}
+                        {{ propertyForm.name(class="form-control") }}
+                        <br/>
+                        {{ propertyForm.hidden_tag() }}
+                        {{ propertyForm.address.label(class="form-label") }}
+                        {{ propertyForm.address(class="form-control") }}
+                        <br/>
+                        {{ propertyForm.hidden_tag() }}
+                        {{ propertyForm.rent.label(class="form-label") }}
+                        {{ propertyForm.rent(class="form-control") }}
+                        <br /> 
+                        <div class="modal-footer">              
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            {{ propertyForm.submit(class="btn btn-primary") }}
+                        </div> 
+                    </form>
+                </div>
             </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
+<!-- Tenant Modal -->
+<div class="modal fade" id="tenantModal" tabindex="-1" aria-labelledby="tenantModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="utenantModalLabel">Add Tenant</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h1>Tenant List:</h1>
+                <br/>
+                <!-- <div class="shadow p-3 mb-5 bg-body-tertiary rounded"> -->
+                <div>
+                    <form method="POST">
+                        {{ userForm.hidden_tag() }}
+                        {{ userForm.name.label(class="form-label") }}
+                        {{ userForm.name(class="form-control") }}
+                        <br/>
+                        {{ userForm.hidden_tag() }}
+                        {{ userForm.username.label(class="form-label") }}
+                        {{ userForm.username(class="form-control") }}
+                        <br/>
+                        {{ userForm.hidden_tag() }}
+                        {{ userForm.email.label(class="form-label") }}
+                        {{ userForm.email(class="form-control") }}
+                        <br />
+                        {{ userForm.hidden_tag() }}
+                        {{ userForm.password_hash.label(class="form-label") }}
+                        {{ userForm.password_hash(class="form-control") }}
+                        <br/>
+                        {{ userForm.hidden_tag() }}
+                        {{ userForm.password_hash2.label(class="form-label") }}
+                        {{ userForm.password_hash2(class="form-control") }}
+                        <br/>
+                        {{ userForm.is_admin.label(class="form-label") }}
+                        {{ userForm.is_admin(class="form-control") }}
+                        <br/>
+                        <div class="modal-footer">              
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
